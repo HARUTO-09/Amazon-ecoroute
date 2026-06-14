@@ -6,8 +6,8 @@ import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserAttribu
 // Initialize Cognito User Pool
 // Safe fallback if env variables aren't provided
 const poolData = {
-  UserPoolId: import.meta.env.VITE_COGNITO_USER_POOL_ID || "us-east-1_dummy",
-  ClientId: import.meta.env.VITE_COGNITO_CLIENT_ID || "dummyclientid"
+  UserPoolId: import.meta.env.VITE_APP_AWS_COGNITO_USER_POOL_ID || "us-east-1_dummy",
+  ClientId: import.meta.env.VITE_APP_AWS_COGNITO_CLIENT_ID || "dummyclientid"
 };
 const userPool = new CognitoUserPool(poolData);
 
@@ -29,7 +29,7 @@ export default function AmazonLoginPage({ onLoginSuccess, onLogoClick }: { onLog
 
     // Fallback if AWS credentials aren't set up yet
     if (poolData.UserPoolId === "us-east-1_dummy") {
-      console.warn("Mocking AWS Cognito because VITE_COGNITO_USER_POOL_ID is missing from .env");
+      console.warn("Mocking AWS Cognito because VITE_APP_AWS_COGNITO_USER_POOL_ID is missing from .env");
       setTimeout(() => {
         setIsLoading(false);
         if (mode === "signin") {

@@ -5,9 +5,9 @@ frontend:
       commands:
         - npm ci
         # Inject standard VITE environment variables from Amplify into .env for build step
-        - echo "VITE_COGNITO_USER_POOL_ID=$VITE_COGNITO_USER_POOL_ID" >> .env
-        - echo "VITE_COGNITO_CLIENT_ID=$VITE_COGNITO_CLIENT_ID" >> .env
-        - echo "VITE_APP_REGION=$VITE_APP_REGION" >> .env
+        - echo "VITE_APP_AWS_COGNITO_USER_POOL_ID=$VITE_APP_AWS_COGNITO_USER_POOL_ID" >> .env
+        - echo "VITE_APP_AWS_COGNITO_CLIENT_ID=$VITE_APP_AWS_COGNITO_CLIENT_ID" >> .env
+        - echo "VITE_APP_AWS_REGION=$VITE_APP_AWS_REGION" >> .env
     build:
       commands:
         # Custom build command to ensure static assets are correctly built and served
