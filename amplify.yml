@@ -1,0 +1,37 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+        # Inject standard VITE environment variables from Amplify into .env for build step
+        - echo "VITE_COGNITO_USER_POOL_ID=$VITE_COGNITO_USER_POOL_ID" >> .env
+        - echo "VITE_COGNITO_CLIENT_ID=$VITE_COGNITO_CLIENT_ID" >> .env
+        - echo "VITE_APP_REGION=$VITE_APP_REGION" >> .env
+    build:
+      commands:
+        # Custom build command to ensure static assets are correctly built and served
+        - npm run build:amplify
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+  customHeaders:
+    - pattern: '**/*'
+      headers:
+        - key: 'Strict-Transport-Security'
+          value: 'max-age=31536000; includeSubDomains'
+        - key: 'X-Frame-Options'
+          value: 'SAMEORIGIN'
+        - key: 'X-XSS-Protection'
+          value: '1; mode=block'
+        - key: 'X-Content-Type-Options'
+          value: 'nosniff'
+customRules:
+  - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp)$)([^.]+$)/>'
+    status: '200'
+    target: '/index.html'
+
